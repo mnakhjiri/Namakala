@@ -14,13 +14,12 @@ class _PageHandlerState extends State<PageHandler> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false,
       title: "Namakala",
       theme: ThemeData(
         fontFamily: 'iransans',
       ),
       home:  Scaffold(
-          resizeToAvoidBottomInset: false,
         body: buildPages(),
         floatingActionButton: FloatingActionButton(
           onPressed: (){},
