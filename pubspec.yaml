@@ -83,6 +83,9 @@ flutter:
      - family: iransans
        fonts:
          - asset: lib/fonts/IranianSans.ttf
+     - family: vazirbold
+       fonts:
+         - asset: lib/fonts/vazirbold.ttf
      - family: MyIcons
        fonts:
          - asset: lib/fonts/MyIcons.ttf
