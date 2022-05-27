@@ -10,28 +10,11 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: "Namakala",
-        theme: ThemeData(
-          fontFamily: 'iransans',
-        ),
-        home: Scaffold(
-          body: Column(
+          return Column(
             children: [
               SearchContainer(),
             ],
-          ),
-
-          floatingActionButton: FloatingActionButton(
-            onPressed: (){},
-            child: Icon(Icons.shopping_bag_outlined),
-            backgroundColor: Colors.red,
-          ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-          bottomNavigationBar: MyNavigationBar(),
-        ),
-      );
+          );
   }
 }
 

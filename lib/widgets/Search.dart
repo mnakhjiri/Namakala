@@ -35,7 +35,7 @@ class _SearchBarState extends State<SearchBar> {
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(15),
           color: Color(0xffdfdfdf),  ),
         margin: EdgeInsets.only( right: width/80 , left : width/80 ),
-        padding: EdgeInsets.only(top :height/500 , bottom: height/50   ),
+        padding: EdgeInsets.only(top :height/500 , bottom: height/500   ),
         child: Directionality(
           textDirection: TextDirection.rtl,
           child: Row(
@@ -48,7 +48,12 @@ class _SearchBarState extends State<SearchBar> {
               SizedBox(
                 width: (width/10)*8,
                 child: TextField(
+                  cursorColor: Colors.black,
                   decoration: InputDecoration(
+                      labelStyle: new TextStyle(
+                          color:  Colors.black,
+                      ),
+                    border: InputBorder.none,
                     labelText: "جست و جو کنید",
                   ),
                   controller: _controller,

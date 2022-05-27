@@ -3,38 +3,47 @@ import 'package:flutter/material.dart';
 import 'package:namakala/pages/HomePage.dart';
 import 'package:namakala/pages/Login.dart';
 
-class MyNavigationBar extends StatefulWidget {
-  int currentIndex = 0;
-  static final MyNavigationBar _myNavigationBar = MyNavigationBar._internal();
-
-
-  MyNavigationBar._internal();
-  factory MyNavigationBar(int index) {
-    _myNavigationBar.currentIndex = index;
-    return _myNavigationBar;
-  }
-  static getInstance() {
-    return _myNavigationBar;
-  }
-  // MyNavigationBar(this.currentIndex);
-
+class PageHandler extends StatefulWidget {
+  const PageHandler({Key? key}) : super(key: key);
   @override
-  State<MyNavigationBar> createState() => _MyNavigationBarState(currentIndex);
+  State<PageHandler> createState() => _PageHandlerState();
 }
 
-class _MyNavigationBarState extends State<MyNavigationBar> {
-  int currentIndex;
-
-  _MyNavigationBarState(this.currentIndex);
-
-  final List<Widget> pages = [
-    HomePage(),
-    HomePage(),
-    LoginPage(),
-  ];
-
+class _PageHandlerState extends State<PageHandler> {
+  int pageIndex = 0;
   @override
   Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: "Namakala",
+      theme: ThemeData(
+        fontFamily: 'iransans',
+      ),
+      home:  Scaffold(
+        body: buildPages(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: (){},
+          child: Icon(Icons.shopping_bag_outlined),
+          backgroundColor: Colors.red,
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+        bottomNavigationBar: buildNav(),
+    ),
+
+    );
+  }
+  Widget buildPages(){
+    switch(pageIndex){
+      case 0:
+        return HomePage();
+      case 2:
+        return LoginPage();
+      default:
+        return HomePage();
+    }
+  }
+  Widget buildNav(){
+    int selected = pageIndex;
     return Directionality(
       textDirection: TextDirection.rtl,
       child: BubbleBottomBar(
@@ -44,16 +53,13 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
         onTap: (index) {
           setState(() {
-            widget.currentIndex = index;
+            pageIndex = index;
+            selected = index;
           });
-          Navigator.pushReplacement(context, PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) => pages[index],
-            transitionDuration: Duration.zero,
-            reverseTransitionDuration: Duration.zero,
-          ));
+
         },
         elevation: 8,
-        currentIndex: widget.currentIndex,
+        currentIndex: selected,
         fabLocation: BubbleBottomBarFabLocation.end, //new
         hasNotch: true, //new
         hasInk: true, //new, gives a cute ink effect
@@ -70,6 +76,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
         ],
       ),
     );
-
   }
 }
+
+
