@@ -23,7 +23,7 @@ class LoginPage extends StatelessWidget {
               textAlign: TextAlign.center,
               cursorColor: Colors.black,
               decoration: InputDecoration(
-                hintText: 'نام کاربری یا ایمیل',
+                hintText: 'شماره تماس',
                 labelStyle: TextStyle(
                   color: Colors.black,
                 ),
@@ -33,25 +33,7 @@ class LoginPage extends StatelessWidget {
             ),
           ),
         ),
-        Container(
-          margin: EdgeInsets.only(top: MediaQuery.of(context).size.height / 15),
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width /1.25,
-            child: const TextField(
-              obscureText: true,
-              textAlign: TextAlign.center,
-              cursorColor: Colors.black,
-              decoration: InputDecoration(
-                hintText: 'رمز عبور',
-                labelStyle: TextStyle(
-                  color: Colors.black,
-                ),
-
-              ),
-
-            ),
-          ),
-        ),
+        PasswordWidget(),
         Container(
           margin: EdgeInsets.only(top: MediaQuery.of(context).size.height / 15),
           child: SizedBox(
@@ -91,6 +73,50 @@ class LoginPage extends StatelessWidget {
         ),
       ],
         );
+  }
+}
+
+class PasswordWidget extends StatefulWidget {
+  const PasswordWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<PasswordWidget> createState() => _PasswordWidgetState();
+}
+
+class _PasswordWidgetState extends State<PasswordWidget> {
+  bool _isHidden = true;
+  void _togglePasswordView(){
+    setState((){
+      _isHidden = !_isHidden;
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: MediaQuery.of(context).size.height / 15),
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width /1.25,
+        child:  TextField(
+          obscureText: _isHidden,
+          textAlign: TextAlign.center,
+          cursorColor: Colors.black,
+          decoration: InputDecoration(
+            suffix: InkWell(
+              onTap: _togglePasswordView,
+              child: Icon( Icons.visibility),
+            ),
+            hintText: 'رمز عبور',
+            labelStyle: TextStyle(
+              color: Colors.black,
+            ),
+
+          ),
+
+        ),
+      ),
+    );
   }
 }
 
