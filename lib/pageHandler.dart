@@ -4,13 +4,18 @@ import 'package:namakala/pages/HomePage.dart';
 import 'package:namakala/pages/Login.dart';
 
 class PageHandler extends StatefulWidget {
-  const PageHandler({Key? key}) : super(key: key);
+  int index = 0;
+  PageHandler();
+  PageHandler.index(this.index);
   @override
-  State<PageHandler> createState() => _PageHandlerState();
+  State<PageHandler> createState() => _PageHandlerState(index);
 }
 
 class _PageHandlerState extends State<PageHandler> {
+
   int pageIndex = 0;
+  _PageHandlerState(this.pageIndex);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -42,6 +47,7 @@ class _PageHandlerState extends State<PageHandler> {
         return HomePage();
     }
   }
+
   Widget buildNav(){
     int selected = pageIndex;
     return Directionality(
