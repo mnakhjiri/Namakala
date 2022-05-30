@@ -9,7 +9,8 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      return Column(
+      return ListView(
+        padding: EdgeInsets.all(30),
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -91,7 +92,7 @@ class LoginWelcome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.only(top : MediaQuery.of(context).size.height/5),
+        margin: EdgeInsets.only(top : MediaQuery.of(context).size.height/7),
         child: Text('ورود',
         style: TextStyle(
           fontSize: MediaQuery.of(context).size.height/20,
