@@ -1,5 +1,6 @@
 import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:namakala/pages/CategoryPage.dart';
 import 'package:namakala/pages/HomePage.dart';
 import 'package:namakala/pages/Login.dart';
 
@@ -41,6 +42,8 @@ class _PageHandlerState extends State<PageHandler> {
     switch(pageIndex){
       case 0:
         return HomePage();
+      case 1:
+        return CategoryPage();
       case 2:
         return LoginPage();
       default:
