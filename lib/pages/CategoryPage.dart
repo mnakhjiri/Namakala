@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:namakala/pages/ProductsPage.dart';
 
 class CategoryPage extends StatelessWidget {
   const CategoryPage({Key? key}) : super(key: key);
@@ -117,7 +118,13 @@ class categoryItem extends StatelessWidget {
       margin: EdgeInsets.only(top: MediaQuery.of(context).size.height/20),
       alignment: Alignment.center,
       child: ElevatedButton(
-        onPressed: (){},
+        onPressed: (){
+          Navigator.pushReplacement(context, PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) => ProdoctsPage(),
+            transitionDuration: Duration.zero,
+            reverseTransitionDuration: Duration.zero,
+          ));
+        },
         child: Column(
           children: [
             Image.asset(imgPath,

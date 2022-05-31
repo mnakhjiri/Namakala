@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:namakala/pages/HomePage.dart';
 import 'package:namakala/pages/Login.dart';
 
+import '../pageHandler.dart';
+
 class MyNavigationBar extends StatefulWidget {
   int currentIndex = 0;
   static final MyNavigationBar _myNavigationBar = MyNavigationBar._internal();
@@ -28,9 +30,9 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
   _MyNavigationBarState(this.currentIndex);
 
   final List<Widget> pages = [
-    HomePage(),
-    HomePage(),
-    LoginPage(),
+    PageHandler.index(0),
+    PageHandler.index(1),
+    PageHandler.index(2),
   ];
 
   @override
