@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:namakala/pages/ProductPage.dart';
 import 'package:namakala/widgets/SearchContainer.dart';
 import  'package:persian_number_utility/persian_number_utility.dart';
 import '../widgets/NavigationBar.dart';
@@ -64,7 +65,13 @@ class ProductSection extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
-              onPressed: (){},
+              onPressed: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ProductPage(                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                )),
+                );
+
+              },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Color(0xFFe3e1e1)),
 
