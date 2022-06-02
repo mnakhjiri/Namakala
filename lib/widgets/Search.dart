@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import '../MyIcons.dart';
 class SearchBar extends StatefulWidget {
-  const SearchBar({Key? key}) : super(key: key);
+  SearchBar({Key? key}) : super(key: key);
+  var searchText = "جست و جو کنید";
+  SearchBar.text(this.searchText);
 
   @override
   State<SearchBar> createState() => _SearchBarState();
@@ -29,6 +31,7 @@ class _SearchBarState extends State<SearchBar> {
     final height = size.height;
 
     final width = size.width;
+    var searchText = widget.searchText;
     return Scaffold(
       body: Container(
 
@@ -54,7 +57,7 @@ class _SearchBarState extends State<SearchBar> {
                           color:  Colors.black,
                       ),
                     border: InputBorder.none,
-                    labelText: "جست و جو کنید",
+                    labelText: searchText,
                   ),
                   controller: _controller,
                   // onSubmitted: (String value) async {

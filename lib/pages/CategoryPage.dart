@@ -120,7 +120,7 @@ class categoryItem extends StatelessWidget {
       child: ElevatedButton(
         onPressed: (){
           Navigator.pushReplacement(context, PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) => ProdoctsPage(),
+            pageBuilder: (context, animation, secondaryAnimation) => ProdoctsPage.text( "جست و جو در بخش " +  imgText  ),
             transitionDuration: Duration.zero,
             reverseTransitionDuration: Duration.zero,
           ));
