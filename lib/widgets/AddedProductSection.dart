@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
+import '../pages/EditProduct.dart';
 import '../pages/ProductPage.dart';
 
 class AddedProductSection extends StatelessWidget {
@@ -68,7 +69,43 @@ class AddedProductSection extends StatelessWidget {
 
                     ),
                   ),
-                  
+                  Container(
+                    child: Column(
+                      children: [
+                        Row(
+
+                          children: [
+                            SizedBox(width: 40 , child: ElevatedButton(onPressed: (){
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const EditProduct()),
+                              );
+                            },
+                                style: ButtonStyle(
+                                    backgroundColor:  MaterialStateProperty.all(Colors.black),
+                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                        )
+                                    )
+                                ),
+                                child: Center(child: Icon(Icons.edit , size: 10,)))),
+                            SizedBox(width : 10),
+                            SizedBox(width: 40 , child: ElevatedButton(onPressed: (){},
+                                style: ButtonStyle(
+                                    backgroundColor:  MaterialStateProperty.all(Colors.red),
+                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                        )
+                                    )
+                                ),
+                                child: Center(child: Icon(Icons.remove , size: 12, color: Colors.white,)))),
+                          ],
+                        )
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),
