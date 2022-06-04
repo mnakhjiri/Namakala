@@ -38,8 +38,30 @@ class _BuyState extends State<Buy> {
         children: [
           Container(
             child: Column(
-              children: const [
-                Center(child: Text("برای تکمیل خرید ابتدا باید وارد حساب کاربری خود شوید"))
+              children:  [
+                Container(
+                  margin: EdgeInsets.only(top: MediaQuery.of(context).size.height / 15),
+
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width /1.25,
+                    child: const TextField(
+                      textAlign: TextAlign.center,
+                      cursorColor: Colors.black,
+                      decoration: InputDecoration(
+                        hintText: 'آدرس',
+                        labelStyle: TextStyle(
+                          color: Colors.black,
+                        ),
+
+                      ),
+
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 50,
+                ),
+                Center(child: Text("برای تکمیل خرید ابتدا باید وارد حساب کاربری خود شوید")),
               ],
             ),
           )

@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:namakala/pageHandler.dart';
-import 'package:namakala/pages/Login.dart';
 
 import '../widgets/passwordField.dart';
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
 
+  @override
+  State<RegisterPage> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -119,3 +123,4 @@ class RegisterPage extends StatelessWidget {
     );
   }
 }
+
