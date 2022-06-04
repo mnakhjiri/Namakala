@@ -3,13 +3,13 @@ import 'package:persian_number_utility/persian_number_utility.dart';
 
 import '../pages/ProductPage.dart';
 
-class CartSection extends StatelessWidget {
-  CartSection();
+class UserProductSection extends StatelessWidget {
+  UserProductSection();
   var data = "گوشی  Iphone";
   var img_src = "lib/img/products/iphone.png";
   var price = "40,000,000";
   var rating = " 4.5";
-  CartSection.arg(this.data, this.img_src, this.price, this.rating);
+  UserProductSection.arg(this.data, this.img_src, this.price, this.rating);
   @override
   Widget build(BuildContext context) {
 
@@ -63,47 +63,14 @@ class CartSection extends StatelessWidget {
                         ),
 
                         SizedBox(height: 15,),
+                        
+                        Text("1400 / 2 / 3".toPersianDigit() , style: TextStyle(color: Colors.black), textDirection: TextDirection.ltr,),
 
                         SizedBox(height: 15,),
                       ],
-
+                      
                     ),
                   ),
-                  Container(
-                    child: Column(
-                      children: [
-                        Text("تعداد : 5 ".toPersianDigit() , style: TextStyle(
-                          color: Colors.black,
-                        ),),
-                        Row(
-
-                          children: [
-                            SizedBox(width: 40 , child: ElevatedButton(onPressed: (){},
-                            style: ButtonStyle(
-                              backgroundColor:  MaterialStateProperty.all(Colors.black),
-                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  )
-                              )
-                            ),
-                            child: Center(child: Icon(Icons.add , size: 10,)))),
-                            SizedBox(width : 10),
-                            SizedBox(width: 40 , child: ElevatedButton(onPressed: (){},
-                                style: ButtonStyle(
-                                    backgroundColor:  MaterialStateProperty.all(Colors.black),
-                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(10),
-                                        )
-                                    )
-                                ),
-                                child: Center(child: Icon(Icons.remove , size: 10,)))),
-                          ],
-                        )
-                      ],
-                    ),
-                  )
 
                 ],
               ),

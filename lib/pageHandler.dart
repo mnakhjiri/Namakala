@@ -26,7 +26,12 @@ class _PageHandlerState extends State<PageHandler> {
       title: "Namakala",
       theme: ThemeData(
         fontFamily: 'iransans',
-      ),
+        tabBarTheme:  TabBarTheme(
+            labelColor: Colors.pink[800],
+            labelStyle: TextStyle(color: Colors.pink[800]), // color for text
+            indicator: UnderlineTabIndicator( // color for indicator (underline)
+                borderSide: BorderSide(color: Colors.black)),
+      ),),
       home:  Scaffold(
         body: buildPages(),
         floatingActionButton: FloatingButton(),
