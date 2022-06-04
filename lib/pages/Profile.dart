@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:namakala/pages/EditProfile.dart';
+import 'package:namakala/pages/addProduct.dart';
 import 'package:namakala/widgets/AddedProductSection.dart';
+import 'package:namakala/widgets/FavProduct.dart';
 import 'package:namakala/widgets/SearchContainer.dart';
 import 'package:namakala/widgets/UserProductSection.dart';
 
@@ -65,16 +68,7 @@ class ProfilePage extends StatelessWidget {
                         UserInfo(),
                         UserHistory(),
                         MyProducts(),
-                        ListView(
-                          children: [
-                            Center(child: Text("لیست علاقه مندی ها" , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20),)),
-                            SizedBox(height: 15,),
-                            AddedProductSection(),
-                            AddedProductSection.arg("گوشی  شیاومی", "lib/img/products/mi.png", "20,000,000", "4.5"),
-                            AddedProductSection.arg("گوشی  samsung", "lib/img/products/samsung2.png", "28,000,000", "4.7"),
-
-                          ],
-                        )
+                        Fav()
                       ],
                     ),
                   ),
@@ -82,6 +76,26 @@ class ProfilePage extends StatelessWidget {
           ])),
     );
 
+  }
+}
+
+class Fav extends StatelessWidget {
+  const Fav({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: [
+        Center(child: Text("لیست علاقه مندی ها" , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20),)),
+        SearchContainer.text("جست و جو در علاقه مندی ها"),
+        FavProduct(),
+        FavProduct.arg("گوشی  شیاومی", "lib/img/products/mi.png", "20,000,000", "4.5"),
+        FavProduct.arg("گوشی  samsung", "lib/img/products/samsung2.png", "28,000,000", "4.7"),
+
+      ],
+    );
   }
 }
 
@@ -96,6 +110,23 @@ class MyProducts extends StatelessWidget {
       children: [
         Center(child: Text("کالا های من" , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20),)),
         SizedBox(height: 15,),
+        Padding(
+          padding: EdgeInsets.only(left: 60 , right : 60),
+          child: ElevatedButton(onPressed: (){
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AddProduct()));
+          }, child: Text("افزودن کالا") , style: ButtonStyle(
+              padding: MaterialStateProperty.all<EdgeInsets>(
+                  EdgeInsets.all(15)),
+              backgroundColor:  MaterialStateProperty.all(Colors.black),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  )
+              )
+          )),
+        ),
         AddedProductSection(),
         AddedProductSection.arg("گوشی  شیاومی", "lib/img/products/mi.png", "20,000,000", "4.5"),
         AddedProductSection.arg("گوشی  samsung", "lib/img/products/samsung2.png", "28,000,000", "4.7"),
@@ -150,7 +181,11 @@ class UserInfo extends StatelessWidget {
         SizedBox(height: 15,),
         Padding(
           padding: EdgeInsets.only(left: 40 , right : 40),
-          child: ElevatedButton(onPressed: (){}, child: Text("ویرایش اطلاعات کاربری") , style: ButtonStyle(
+          child: ElevatedButton(onPressed: (){
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => EditProfile()));
+          }, child: Text("ویرایش اطلاعات کاربری") , style: ButtonStyle(
               padding: MaterialStateProperty.all<EdgeInsets>(
                   EdgeInsets.all(15)),
               backgroundColor:  MaterialStateProperty.all(Colors.black),

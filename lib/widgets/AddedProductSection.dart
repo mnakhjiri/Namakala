@@ -63,11 +63,12 @@ class AddedProductSection extends StatelessWidget {
                         ),
 
                         SizedBox(height: 15,),
+
                       ],
 
                     ),
                   ),
-
+                  
                 ],
               ),
             ),
