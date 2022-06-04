@@ -1,8 +1,10 @@
 import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:namakala/pages/Cart.dart';
 import 'package:namakala/pages/CategoryPage.dart';
 import 'package:namakala/pages/HomePage.dart';
 import 'package:namakala/pages/Login.dart';
+import 'package:namakala/widgets/FloatingButton.dart';
 
 class PageHandler extends StatefulWidget {
   int index = 0;
@@ -27,11 +29,7 @@ class _PageHandlerState extends State<PageHandler> {
       ),
       home:  Scaffold(
         body: buildPages(),
-        floatingActionButton: FloatingActionButton(
-          onPressed: (){},
-          child: Icon(Icons.shopping_bag_outlined),
-          backgroundColor: Colors.red,
-        ),
+        floatingActionButton: FloatingButton(),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
         bottomNavigationBar: buildNav(),
     ),
@@ -87,5 +85,6 @@ class _PageHandlerState extends State<PageHandler> {
     );
   }
 }
+
 
 

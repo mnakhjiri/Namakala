@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:namakala/pages/ProductPage.dart';
+import 'package:namakala/widgets/FloatingButton.dart';
 import 'package:namakala/widgets/SearchContainer.dart';
 import  'package:persian_number_utility/persian_number_utility.dart';
 import '../widgets/NavigationBar.dart';
@@ -36,11 +37,7 @@ class ProdoctsPage extends StatelessWidget {
             ),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: (){},
-          child: Icon(Icons.shopping_bag_outlined),
-          backgroundColor: Colors.red,
-        ),
+        floatingActionButton: FloatingButton(),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
 
         bottomNavigationBar: MyNavigationBar(1),
