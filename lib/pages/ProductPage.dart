@@ -73,8 +73,10 @@ class ProductPage extends StatelessWidget {
               ),
             ),
             RadioGroup(),
+
           ],
         ),
+
 
         bottomNavigationBar: SizedBox(
           height: MediaQuery.of(context).size.height/10,
@@ -153,11 +155,13 @@ class Slider extends StatelessWidget {
                   )
               )
           ),
-        )
+        ),
+
 
       ],
     );
   }
 }
+
 
 
