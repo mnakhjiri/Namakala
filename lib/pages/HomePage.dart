@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -8,9 +11,13 @@ import 'package:namakala/widgets/Search.dart';
 import '../widgets/SearchContainer.dart';
 import 'CategoryPage.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
 
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
           return Column(
@@ -19,7 +26,9 @@ class HomePage extends StatelessWidget {
               Expanded(
                 child: ListView(
                   children: [
+                    SizedBox(height: 20,),
                     CarouselSlider(
+
                       items: [
 
                         //1st Image of Slider
@@ -117,6 +126,23 @@ class HomePage extends StatelessWidget {
               )
             ],
           );
+
+  }
+
+  serverTest(String testMsg) async{
+    final port = 8000;
+    var host = "192.168.31.96";
+    print("inside method");
+    String result = "";
+    await Socket.connect(host, port).then((serverSocket) {
+      print("connected");
+      serverSocket.write(testMsg + "\n");
+      serverSocket.flush();
+      serverSocket.listen((response) {
+        result = utf8.decode(response);
+
+      });
+    });
   }
 }
 

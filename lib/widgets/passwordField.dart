@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 
 class PasswordWidget extends StatefulWidget {
 
-  PasswordWidget();
+  TextEditingController textEditingController = new TextEditingController();
 
+  PasswordWidget();
+  PasswordWidget.controller(TextEditingController textEditingController){
+    this.textEditingController = textEditingController;
+  }
   @override
   State<PasswordWidget> createState() => _PasswordWidgetState();
 }
 
 class _PasswordWidgetState extends State<PasswordWidget> {
-
   bool _isHidden = true;
   void _togglePasswordView(){
     setState((){
@@ -27,6 +30,7 @@ class _PasswordWidgetState extends State<PasswordWidget> {
       child: SizedBox(
         width: MediaQuery.of(context).size.width /1.25,
         child:  TextField(
+          controller: widget.textEditingController,
           obscureText: _isHidden,
           textAlign: TextAlign.center,
           cursorColor: Colors.black,
