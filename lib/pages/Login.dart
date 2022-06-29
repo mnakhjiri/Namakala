@@ -65,28 +65,14 @@ class _LoginPageState extends State<LoginPage> {
                 width: MediaQuery.of(context).size.width /1.25,
                 height: MediaQuery.of(context).size.height / 15,
                 child: ElevatedButton(onPressed: (){
-                  send( phone + " " + widget.passwordWidget.passValue  , ServerType.LoginHandler);
+                  if(phone == "" || widget.passwordWidget.passValue == ""){
+                      send( "0" + "-" + "g"  , ServerType.LoginHandler);
+                  }else{
+                    send( phone + "-" + widget.passwordWidget.passValue  , ServerType.LoginHandler);
+                  }
 
                   // check later
-                  Timer(Duration(milliseconds: 300) , (){
-                    if(loggedIn == false){
-                      animated_dialog_box.showCustomAlertBox(context: context, yourWidget: Center(child: Text("کاربری با این مشخصات یافت نشد" , style: TextStyle(), textAlign: TextAlign.center,)), firstButton: Center(
-                        child: MaterialButton(
-                          // FIRST BUTTON IS REQUIRED
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(40),
-                          ),
-                          color: Colors.white,
-                          child: Text('متوجه شدم'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ),);
-                    }else{
 
-                    }
-                  });
                 }, child:
                 Text('ورود', style: TextStyle(color: Colors.white, fontFamily: 'vazirbold' , fontSize: 17),),
                   style:
@@ -144,12 +130,18 @@ class _LoginPageState extends State<LoginPage> {
             setState((){
               loggedIn = true;
               CurrentUser.isLogin = true;
-              var info = jsonDecode(result);
+              var results = result.split("-");
+              var info = jsonDecode(results[1]);
+              CurrentUser.port = int.parse(results[0]);
               CurrentUser.name = info['name'];
               CurrentUser.phoneNumber = info['phoneNumber'];
               CurrentUser.mail = info['mail'];
               CurrentUser.pass = info['pass'];
-
+              if(info['img'] == null){
+                CurrentUser.img = "";
+              }else{
+                CurrentUser.img = info['img'];
+              }
               // CurrentUser.phoneNumber = result.split(" ")[0];
               // CurrentUser.port = int.parse(result.split(" ")[1]);
             });

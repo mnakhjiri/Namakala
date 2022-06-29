@@ -131,13 +131,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       Timer(Duration(milliseconds: 500) , (){animated_dialog_box.showCustomAlertBox(context: context, yourWidget: Center(child: Text(serverResult , style: TextStyle(), textAlign: TextAlign.center,)), firstButton: Center(
                         child: MaterialButton(
                           // FIRST BUTTON IS REQUIRED
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(40),
-                          ),
-                          color: Colors.white,
-                          child: Text('متوجه شدم'),
+
                           onPressed: () {
-                            Navigator.of(context).pop();
                           },
                         ),
                       ),);});

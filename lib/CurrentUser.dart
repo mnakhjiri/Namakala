@@ -5,5 +5,5 @@ class CurrentUser{
   static String name = "";
   static String mail = "";
   static String pass = "";
-
+  static String img = "";
 }
