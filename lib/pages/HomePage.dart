@@ -140,7 +140,6 @@ class _HomePageState extends State<HomePage> {
       serverSocket.flush();
       serverSocket.listen((response) {
         result = utf8.decode(response);
-
       });
     });
   }

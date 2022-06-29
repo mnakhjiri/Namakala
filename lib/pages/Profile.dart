@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:namakala/CurrentUser.dart';
 import 'package:namakala/pages/EditProfile.dart';
 import 'package:namakala/pages/addProduct.dart';
 import 'package:namakala/widgets/AddedProductSection.dart';
@@ -11,6 +12,8 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    print(CurrentUser.name);
     return DefaultTabController(
       length: 4,
       child: Scaffold(
@@ -37,7 +40,7 @@ class ProfilePage extends StatelessWidget {
 
                               ),
                             ),
-                            Text("کاربر تست" , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20 )),
+                            Text(CurrentUser.name , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20 )),
                           ],
                         ),
                       )

@@ -1,5 +1,10 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:animated_dialog_box/animated_dialog_box.dart';
 import 'package:flutter/material.dart';
+import 'package:namakala/ServerConnection.dart';
 import 'package:namakala/pageHandler.dart';
 
 import '../widgets/passwordField.dart';
@@ -16,6 +21,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final phoneController = TextEditingController();
   final mailController = TextEditingController();
   final passController = TextEditingController();
+  var serverResult = "درحال ارتباط با سرور";
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -112,9 +118,29 @@ class _RegisterPageState extends State<RegisterPage> {
               child: SizedBox(
                 width: MediaQuery.of(context).size.width /1.25,
                 height: MediaQuery.of(context).size.height / 15,
-                child: ElevatedButton(onPressed: (){
+                child: ElevatedButton(onPressed: ()  async {
                   var result = checkInputs();
                   if(result == ""){
+                    var user = {
+                      "name": nameController.text,
+                      "phoneNumber": phoneController.text,
+                      "mail" : mailController.text,
+                      "pass" : passController.text
+                    };
+                      send(jsonEncode(user), ServerType.RegisterHandler);
+                      Timer(Duration(milliseconds: 500) , (){animated_dialog_box.showCustomAlertBox(context: context, yourWidget: Center(child: Text(serverResult , style: TextStyle(), textAlign: TextAlign.center,)), firstButton: Center(
+                        child: MaterialButton(
+                          // FIRST BUTTON IS REQUIRED
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(40),
+                          ),
+                          color: Colors.white,
+                          child: Text('متوجه شدم'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ),);});
 
                   }else{
                     animated_dialog_box.showCustomAlertBox(context: context, yourWidget: Center(child: Text(result , style: TextStyle(), textAlign: TextAlign.center,)), firstButton: Center(
@@ -176,6 +202,31 @@ class _RegisterPageState extends State<RegisterPage> {
       result += passAlert + "\n\n";
     }
     return result.trim();
+  }
+  Future<String> send(String serverData  , ServerType type) async{
+    String result  = "ok";
+    int? port = ServerConnection.ports[type];
+    await Socket.connect(ServerConnection.host, port!).then((serverSocket) {
+      print("connected");
+      var listServer = utf8.encode(serverData) + [0];
+      // print(String.fromCharCodes(listServer));
+      // print(utf8.decode(listServer));
+      serverSocket.write(serverData + "\u0000");
+      serverSocket.flush();
+      serverSocket.listen((response) {
+        result = utf8.decode(response);
+        setState((){
+
+          if(result == "registered"){
+            serverResult = "با موفقیت ثبت نام شدید از طریق پنل وارد حساب خود شوید";
+          }
+          if(result == "unregistered"){
+            serverResult = "شماره همراه تکراری است لطفا وارد شده یا شماره جدیدی وارد کنید";
+          }
+        });
+      });
+    });
+    return result;
   }
 }
 

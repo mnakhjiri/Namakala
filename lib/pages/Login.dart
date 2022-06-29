@@ -1,7 +1,13 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:namakala/pages/Profile.dart';
 import 'package:namakala/pages/Register.dart';
-
+import 'package:animated_dialog_box/animated_dialog_box.dart';
+import '../CurrentUser.dart';
+import '../ServerConnection.dart';
 import '../widgets/NavigationBar.dart';
 
 class LoginPage extends StatefulWidget {
@@ -14,9 +20,11 @@ class _LoginPageState extends State<LoginPage> {
   var loggedIn = false;
   var phone = "";
   var pass = "";
+  var phoneController = TextEditingController();
+  var passController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-      if(!loggedIn){
+      if(!loggedIn && !CurrentUser.isLogin){
         return ListView(
           padding: EdgeInsets.all(30),
           children: [
@@ -31,6 +39,7 @@ class _LoginPageState extends State<LoginPage> {
               child: SizedBox(
                 width: MediaQuery.of(context).size.width /1.25,
                 child:  TextField(
+                  controller: phoneController,
                   onChanged: (text) {
                     phone = text;
                   },
@@ -56,13 +65,28 @@ class _LoginPageState extends State<LoginPage> {
                 width: MediaQuery.of(context).size.width /1.25,
                 height: MediaQuery.of(context).size.height / 15,
                 child: ElevatedButton(onPressed: (){
-                  print(widget.passwordWidget.passValue);
-                  if(phone == "123" && widget.passwordWidget.passValue == "123" ){
-                    setState((){
-                      loggedIn = true;
-                      print("done");
-                    });
-                  }
+                  send( phone + " " + widget.passwordWidget.passValue  , ServerType.LoginHandler);
+
+                  // check later
+                  Timer(Duration(milliseconds: 300) , (){
+                    if(loggedIn == false){
+                      animated_dialog_box.showCustomAlertBox(context: context, yourWidget: Center(child: Text("کاربری با این مشخصات یافت نشد" , style: TextStyle(), textAlign: TextAlign.center,)), firstButton: Center(
+                        child: MaterialButton(
+                          // FIRST BUTTON IS REQUIRED
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(40),
+                          ),
+                          color: Colors.white,
+                          child: Text('متوجه شدم'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ),);
+                    }else{
+
+                    }
+                  });
                 }, child:
                 Text('ورود', style: TextStyle(color: Colors.white, fontFamily: 'vazirbold' , fontSize: 17),),
                   style:
@@ -102,6 +126,39 @@ class _LoginPageState extends State<LoginPage> {
         );
       }
       return ProfilePage();
+  }
+  Future<String> send(String serverData  , ServerType type) async{
+    String result  = "ok";
+    int? port = ServerConnection.ports[type];
+    await Socket.connect(ServerConnection.host, port!).then((serverSocket) {
+      // print("connected");
+      serverSocket.write(serverData + "\u0000");
+      serverSocket.flush();
+      serverSocket.listen((response) {
+        result = utf8.decode(response);
+        print(result);
+        setState((){
+          if(result == "failed"){
+            print("failed");
+          }else{
+            setState((){
+              loggedIn = true;
+              CurrentUser.isLogin = true;
+              var info = jsonDecode(result);
+              CurrentUser.name = info['name'];
+              CurrentUser.phoneNumber = info['phoneNumber'];
+              CurrentUser.mail = info['mail'];
+              CurrentUser.pass = info['pass'];
+
+              // CurrentUser.phoneNumber = result.split(" ")[0];
+              // CurrentUser.port = int.parse(result.split(" ")[1]);
+            });
+          }
+
+        });
+      });
+    });
+    return result;
   }
 }
 
@@ -176,4 +233,5 @@ class _PasswordWidgetState extends State<PasswordWidget> {
       ),
     );
   }
+
 }
