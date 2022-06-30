@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:namakala/pageHandler.dart';
 import 'package:animated_dialog_box/animated_dialog_box.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
 import '../CurrentUser.dart';
 import '../ServerConnection.dart';
@@ -211,7 +212,7 @@ class _AddProductState extends State<AddProduct> {
                         datas.removeAt(0);
                         atts[temp] = datas;
                       }
-                      serverMap['count'] = countController.text;
+                      serverMap['count'] = countController.text.toEnglishDigit;
                       serverMap['name'] = nameController.text;
                       serverMap['categories'] = categoryController.text.split("-");
                       serverMap['price'] = priceController.text;

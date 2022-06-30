@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:namakala/CurrentUser.dart';
 import 'package:namakala/pages/Buy.dart';
 import 'package:namakala/widgets/CartSection.dart';
 import 'package:namakala/widgets/NavigationBar.dart';
@@ -22,7 +23,24 @@ class _CartPageState extends State<CartPage> {
   var icon = Icons.favorite_border;
   @override
   Widget build(BuildContext context) {
-
+    if(CurrentUser.isLogin == false){
+     return Scaffold(
+       body: Center(child:Text("برای خرید ابتدا وارد حساب خود شوید" , style: TextStyle(fontSize: 20 , fontWeight: FontWeight.bold),)),
+       appBar: AppBar(
+         centerTitle: true,
+         title: Text("سبد خرید" , style: TextStyle(color: Colors.black , fontWeight: FontWeight.bold),),
+         backgroundColor:  Theme.of(context).scaffoldBackgroundColor,
+         elevation: 0.0,
+         leading: IconButton(
+           icon: Icon(Icons.arrow_back, color: Colors.black),
+           onPressed: (){
+             Navigator.of(context).pop();
+           },
+         ),
+       ),
+       
+     );
+    }
     return Scaffold(
       body: Column(
         children: [

@@ -92,13 +92,38 @@ class _ProdoctsPageState extends State<ProdoctsPage> {
     );
   }
 }
-class ProductSection extends StatelessWidget {
+class ProductSection extends StatefulWidget {
+
   ProductSection();
   var data = "گوشی  Iphone";
   var img_src = "lib/img/products/iphone.png";
   var price = "40,000,000";
   var rating = " 4.5";
   ProductSection.arg(this.data, this.img_src, this.price, this.rating);
+
+  @override
+  State<ProductSection> createState() => _ProductSectionState();
+}
+
+class _ProductSectionState extends State<ProductSection> {
+  Widget cartWidget = SizedBox(
+    width: 200,
+    child: ElevatedButton(onPressed: (){},
+      style: ButtonStyle(
+
+          backgroundColor:MaterialStateProperty.all(Colors.red) ,
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25),
+              )
+          )
+      ),
+      child: Text("خرید",
+        style: TextStyle(
+          fontFamily: "vazirbold",
+          color: Colors.white,
+        ),),),
+  );
   @override
   Widget build(BuildContext context) {
 
@@ -112,7 +137,7 @@ class ProductSection extends StatelessWidget {
               onPressed: (){
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) =>  ProductPage(                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                )),
+                  MaterialPageRoute(builder: (context) =>  ProductPage.name(widget.data)),
                 );
 
               },
@@ -127,14 +152,14 @@ class ProductSection extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  Image.network(img_src,
+                  Image.network(widget.img_src,
                     width: MediaQuery.of(context).size.width/3,
                     ),
                     Expanded(
                       child: Column(
                       children: [
                         SizedBox(height: 20,),
-                         Text(data,
+                         Text(widget.data,
                            textAlign: TextAlign.justify,
                            style: TextStyle(
                              fontFamily: 'vazirbold',
@@ -149,13 +174,13 @@ class ProductSection extends StatelessWidget {
                           child: Row(
                             children: [
                               SizedBox(width: 20,),
-                              Text(price.toPersianDigit()  + " تومان",
+                              Text(widget.price.toPersianDigit()  + " تومان",
                               style: TextStyle(
                                 color: Colors.black,
                               )
                               ),
                               SizedBox(width: 20,),
-                              Text(rating.toPersianDigit() +  "⭐",
+                              Text(widget.rating.toPersianDigit() +  "⭐",
                                 style: TextStyle(
                                   color: Colors.black,
                                 ),
@@ -165,24 +190,6 @@ class ProductSection extends StatelessWidget {
                         ),
 
                         SizedBox(height: 15,),
-                        SizedBox(
-                          width: 200,
-                          child: ElevatedButton(onPressed: (){},
-                            style: ButtonStyle(
-
-                                backgroundColor:MaterialStateProperty.all(Colors.red) ,
-                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(25),
-                                    )
-                                )
-                            ),
-                            child: Text("خرید",
-                            style: TextStyle(
-                              fontFamily: "vazirbold",
-                              color: Colors.white,
-                            ),),),
-                        ),
                         SizedBox(height: 15,),
                       ],
 
@@ -197,6 +204,5 @@ class ProductSection extends StatelessWidget {
       ],
     );
   }
-
 }
 

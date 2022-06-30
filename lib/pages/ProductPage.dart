@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:namakala/CurrentUser.dart';
 import 'package:namakala/widgets/NavigationBar.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
+import '../CurrentUser.dart';
+import '../CurrentUser.dart';
 import '../ServerConnection.dart';
 import '../widgets/RadioGroup.dart';
 import '../widgets/SearchContainer.dart';
@@ -39,16 +41,77 @@ class _ProductPageState extends State<ProductPage> {
       )
   ), child: Container(
     child: Text("افزودن به سبد خرید"),
-
   ));
+
+   setCart(){
+    if(CurrentUser.isLogin == false){
+       cartWidget = ElevatedButton(onPressed: (){},style: ButtonStyle(
+          padding: MaterialStateProperty.all<EdgeInsets>(
+              EdgeInsets.only(left: 30 , right: 30)),
+          backgroundColor:  MaterialStateProperty.all(Colors.black),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              )
+          )
+      ), child: Container(
+        child: Text("ابتدا وارد شوید"),
+      ));
+    }
+  }
+  cartAdd(){
+
+  }
   var userPhone = "";
+  cartSend(String serverData  , int port) async{
+  String result  = "ok";
+  await Socket.connect(ServerConnection.host, port).then((serverSocket) {
+    print("connected");
+    serverSocket.write(serverData + "\u0000");
+    serverSocket.flush();
+  });
+}
   @override
   void initState(){
     super.initState();
+    cartWidget = ElevatedButton(onPressed: (){
+      setState((){
+        cartSend("setCart" + "-" + CurrentUser.phoneNumber + "-" + widget.name + "-" + "1" ,CurrentUser.port );
+        cartSend("reduceCount" + "-" + widget.name, CurrentUser.port);
+        cartWidget = ElevatedButton(onPressed: (){
+
+        },style: ButtonStyle(
+            padding: MaterialStateProperty.all<EdgeInsets>(
+                EdgeInsets.only(left: 30 , right: 30)),
+            backgroundColor:  MaterialStateProperty.all(Colors.red),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                )
+            )
+        ), child: Container(
+          child: Text("در سبد خرید"),
+        ));
+      });
+    },style: ButtonStyle(
+        padding: MaterialStateProperty.all<EdgeInsets>(
+            EdgeInsets.only(left: 30 , right: 30)),
+        backgroundColor:  MaterialStateProperty.all(Colors.red),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            )
+        )
+    ), child: Container(
+      child: Text("افزودن به سبد خرید"),
+    ));
+    setCart();
+
     if(CurrentUser.isLogin == true){
       userPhone = CurrentUser.phoneNumber;
     }
   }
+
   @override
   Widget build(BuildContext context) {
 
@@ -151,6 +214,7 @@ class _ProductPageState extends State<ProductPage> {
         if(results[0] == "true" && widget.isOwner == false){
           widget.isOwner = true;
           setState((){
+
             cartWidget = ElevatedButton(onPressed: (){},style: ButtonStyle(
                 padding: MaterialStateProperty.all<EdgeInsets>(
                     EdgeInsets.only(left: 20 , right: 20)),
@@ -176,8 +240,42 @@ class _ProductPageState extends State<ProductPage> {
             }
           });
 
-        }else if(widget.isPriced == false){
+        }else if(widget.isPriced == false && widget.isOwner == false){
           setState((){
+            print("hi");
+            if(productMap["carts"].containsKey(CurrentUser.phoneNumber) && productMap["carts"][CurrentUser.phoneNumber] != "0"){
+              cartWidget = ElevatedButton(onPressed: (){
+
+              },style: ButtonStyle(
+                  padding: MaterialStateProperty.all<EdgeInsets>(
+                      EdgeInsets.only(left: 30 , right: 30)),
+                  backgroundColor:  MaterialStateProperty.all(Colors.red),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      )
+                  )
+              ), child: Container(
+                child: Text("در سبد خرید"),
+              ));
+            }else{
+              if( int.parse((productMap["count"] as String).toEnglishDigit()) == 0 ){
+                cartWidget = ElevatedButton(onPressed: (){},style: ButtonStyle(
+                    padding: MaterialStateProperty.all<EdgeInsets>(
+                        EdgeInsets.only(left: 20 , right: 20)),
+                    backgroundColor:  MaterialStateProperty.all(Colors.black),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        )
+                    )
+                ), child: Container(
+                  child: Text("اتمام موجودی"),
+
+                ));
+              }
+            }
+
             if(productMap["favUsers"].contains(CurrentUser.phoneNumber)){
               icon = Icons.favorite;
             }else{
@@ -192,7 +290,7 @@ class _ProductPageState extends State<ProductPage> {
           });
         }
         Widget img = Image.asset("lib/img/avatar.jpg" , fit: BoxFit.cover,);
-        if(results[2] != ""){
+        if(results[2] != "null"){
           img = Image.network(results[2] , fit:BoxFit.cover ,);
 
         }
