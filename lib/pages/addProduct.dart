@@ -1,6 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:namakala/pageHandler.dart';
+import 'package:animated_dialog_box/animated_dialog_box.dart';
 
+import '../CurrentUser.dart';
+import '../ServerConnection.dart';
 import '../widgets/passwordField.dart';
 
 class AddProduct extends StatefulWidget {
@@ -11,6 +17,14 @@ class AddProduct extends StatefulWidget {
 }
 
 class _AddProductState extends State<AddProduct> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController categoryController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
+  TextEditingController attController = TextEditingController();
+  TextEditingController overalAttController = TextEditingController();
+  TextEditingController countController = TextEditingController();
+  TextEditingController Urls = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -47,7 +61,8 @@ class _AddProductState extends State<AddProduct> {
                 margin: EdgeInsets.only(top: MediaQuery.of(context).size.height / 15),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width /1.25,
-                  child: const TextField(
+                  child:  TextField(
+                    controller: nameController,
                     textAlign: TextAlign.center,
                     cursorColor: Colors.black,
                     decoration: InputDecoration(
@@ -65,11 +80,12 @@ class _AddProductState extends State<AddProduct> {
                 margin: EdgeInsets.only(top: MediaQuery.of(context).size.height / 15),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width /1.25,
-                  child: const TextField(
+                  child:  TextField(
+                    controller: categoryController,
                     textAlign: TextAlign.center,
                     cursorColor: Colors.black,
                     decoration: InputDecoration(
-                      hintText: 'دسته بندی کالا (با / جدا شود)',
+                      hintText: 'دسته بندی کالا (با - جدا شود)',
                       labelStyle: TextStyle(
                         color: Colors.black,
                       ),
@@ -79,29 +95,13 @@ class _AddProductState extends State<AddProduct> {
                   ),
                 ),
               ),
+
               Container(
                 margin: EdgeInsets.only(top: MediaQuery.of(context).size.height / 15),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width /1.25,
-                  child: const TextField(
-                    textAlign: TextAlign.center,
-                    cursorColor: Colors.black,
-                    decoration: InputDecoration(
-                      hintText: 'نام فروشنده',
-                      labelStyle: TextStyle(
-                        color: Colors.black,
-                      ),
-
-                    ),
-
-                  ),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: MediaQuery.of(context).size.height / 15),
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width /1.25,
-                  child: const TextField(
+                  child:  TextField(
+                    controller: priceController,
                     textAlign: TextAlign.center,
                     cursorColor: Colors.black,
                     decoration: InputDecoration(
@@ -119,7 +119,8 @@ class _AddProductState extends State<AddProduct> {
                 margin: EdgeInsets.only(top: MediaQuery.of(context).size.height / 15),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width /1.25,
-                  child: const TextField(
+                  child:  TextField(
+                    controller: attController,
                     textAlign: TextAlign.center,
                     cursorColor: Colors.black,
                     decoration: InputDecoration(
@@ -134,16 +135,37 @@ class _AddProductState extends State<AddProduct> {
                 ),
               ),
               SizedBox(height: 10,),
-              Center(child: Text("مثال : {رنگ}{قرمز20 , سفید10 , صورتی5},{سایز}{کوچک3 , بزرگ2}"  , textAlign: TextAlign.center,)),
+              Center(child: Text("مثال : اندازه-بزرگ-کوچک*رنگ-قرمز-آبی"  , textAlign: TextAlign.center,)),
               Container(
                 margin: EdgeInsets.only(top: MediaQuery.of(context).size.height / 15),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width /1.25,
-                  child: const TextField(
+                  child:  TextField(
+                    controller: overalAttController,
                     textAlign: TextAlign.center,
                     cursorColor: Colors.black,
                     decoration: InputDecoration(
-                      hintText: 'ویژگی های مشترک برای هر دسته (با / جدا شود) ',
+                      hintText: 'ویژگی های مشترک برای هر دسته (با - جدا شود) ',
+                      labelStyle: TextStyle(
+                        color: Colors.black,
+                      ),
+
+                    ),
+
+                  ),
+                ),
+              ),
+              SizedBox(height: 10,),
+              Container(
+                margin: EdgeInsets.only(top: MediaQuery.of(context).size.height / 15),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width /1.25,
+                  child:  TextField(
+                    controller: countController,
+                    textAlign: TextAlign.center,
+                    cursorColor: Colors.black,
+                    decoration: InputDecoration(
+                      hintText: 'تعداد ',
                       labelStyle: TextStyle(
                         color: Colors.black,
                       ),
@@ -157,11 +179,12 @@ class _AddProductState extends State<AddProduct> {
                 margin: EdgeInsets.only(top: MediaQuery.of(context).size.height / 15),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width /1.25,
-                  child: const TextField(
+                  child:  TextField(
+                    controller: Urls,
                     textAlign: TextAlign.center,
                     cursorColor: Colors.black,
                     decoration: InputDecoration(
-                      hintText: ' ( {url1} , {url2}  : مثال )  آدرس عکس ها',
+                      hintText: ' ( "url1" "url2" "url3"  : مثال )  آدرس عکس ها',
                       labelStyle: TextStyle(
                         color: Colors.black,
                       ),
@@ -176,7 +199,49 @@ class _AddProductState extends State<AddProduct> {
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width /1.25,
                   height: MediaQuery.of(context).size.height / 15,
-                  child: ElevatedButton(onPressed: (){}, child:
+                  child: ElevatedButton(onPressed: (){
+                    var result = checkInputs();
+                    if(result == ""){
+                      var serverMap = {};
+                      var strs = attController.text.split("\*");
+                      var atts = {};
+                      for(String str in strs){
+                        var datas = str.split("-");
+                        var temp = datas[0];
+                        datas.removeAt(0);
+                        atts[temp] = datas;
+                      }
+                      serverMap['count'] = countController.text;
+                      serverMap['name'] = nameController.text;
+                      serverMap['categories'] = categoryController.text.split("-");
+                      serverMap['price'] = priceController.text;
+                      serverMap['properties'] = atts;
+                      serverMap['info'] = overalAttController.text.split("-");
+                      serverMap['images'] = Urls.text.split("-");
+                      send( "addProduct-"+ jsonEncode(serverMap), CurrentUser.port);
+                      animated_dialog_box.showCustomAlertBox(context: context, yourWidget: Center(child: Text("محصول با موفقیت اضافه شد" , style: TextStyle(), textAlign: TextAlign.center,)), firstButton: Center(
+                        child: MaterialButton(
+                          // FIRST BUTTON IS REQUIRED
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(40),
+                          ),
+                          onPressed: () {
+                          },
+                        ),
+                      ),);
+                    }else{
+                      animated_dialog_box.showCustomAlertBox(context: context, yourWidget: Center(child: Text(result , style: TextStyle(), textAlign: TextAlign.center,)), firstButton: Center(
+                        child: MaterialButton(
+                          // FIRST BUTTON IS REQUIRED
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(40),
+                          ),
+                          onPressed: () {
+                          },
+                        ),
+                      ),);
+                    }
+                  }, child:
                   Text('افزودن کالا', style: TextStyle(color: Colors.white, fontFamily: 'vazirbold' , fontSize: 17),),
                     style:
                     ElevatedButton.styleFrom(
@@ -193,6 +258,21 @@ class _AddProductState extends State<AddProduct> {
           )
       ),
     );
+  }
+  String checkInputs(){
+    String result = "";
+    if(nameController.text == "" || categoryController.text == "" || priceController.text == "" || attController.text == "" || overalAttController.text == "" || Urls.text == "" || countController.text == ""){
+      result += "پر کردن تمام فیلد ها الزامی است";
+    }
+    return result;
+  }
+  send(String serverData  ,int port) async{
+    print("inside method");
+    await Socket.connect(ServerConnection.host, port).then((serverSocket) {
+      print("connected");
+      serverSocket.write(serverData + "\u0000");
+      serverSocket.flush();
+    });
   }
 }
 

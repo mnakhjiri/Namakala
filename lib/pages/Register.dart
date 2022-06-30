@@ -144,10 +144,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(40),
                         ),
-                        color: Colors.white,
-                        child: Text('متوجه شدم'),
                         onPressed: () {
-                          Navigator.of(context).pop();
                         },
                       ),
                     ),);

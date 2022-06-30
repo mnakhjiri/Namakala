@@ -6,4 +6,5 @@ class CurrentUser{
   static String mail = "";
   static String pass = "";
   static String img = "";
+  static bool profileReload = false;
 }

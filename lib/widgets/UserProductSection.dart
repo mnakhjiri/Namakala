@@ -38,6 +38,7 @@ class UserProductSection extends StatelessWidget {
               ),
               child: Row(
                 children: [
+                  // Image.network(img_src , width: , width: MediaQuery.of(context).size.width/5),
                   Image.asset(img_src,
                     width: MediaQuery.of(context).size.width/5,
                   ),

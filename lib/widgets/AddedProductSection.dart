@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:namakala/CurrentUser.dart';
+import 'package:namakala/pages/Profile.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
+import '../ServerConnection.dart';
 import '../pages/EditProduct.dart';
 import '../pages/ProductPage.dart';
 
@@ -39,9 +44,11 @@ class AddedProductSection extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  Image.asset(img_src,
-                    width: MediaQuery.of(context).size.width/5,
-                  ),
+                  Image.network(img_src ,  width: MediaQuery.of(context).size.width/5),
+                  // Image.asset(img_src,
+                  //   // width: MediaQuery.of(context).size.width/5,
+                  //
+                  // ),
                   Expanded(
                     child: Column(
 
@@ -91,7 +98,9 @@ class AddedProductSection extends StatelessWidget {
                                 ),
                                 child: Center(child: Icon(Icons.edit , size: 10,)))),
                             SizedBox(width : 10),
-                            SizedBox(width: 40 , child: ElevatedButton(onPressed: (){},
+                            SizedBox(width: 40 , child: ElevatedButton(onPressed: (){
+                              send("deleteProduct-" + data, CurrentUser.port);
+                            },
                                 style: ButtonStyle(
                                     backgroundColor:  MaterialStateProperty.all(Colors.red),
                                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -113,6 +122,13 @@ class AddedProductSection extends StatelessWidget {
         ),
       ],
     );
+  }
+  send(String serverData  ,int port) async{
+    await Socket.connect(ServerConnection.host, port).then((serverSocket) {
+      print("connected");
+      serverSocket.write(serverData + "\u0000");
+      serverSocket.flush();
+    });
   }
 
 }
