@@ -13,7 +13,7 @@ class FloatingButton extends StatelessWidget {
       onPressed: (){
         Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const CartPage()));
+            MaterialPageRoute(builder: (context) =>  CartPage()));
       },
       child: Icon(Icons.shopping_bag_outlined),
       backgroundColor: Colors.red,
