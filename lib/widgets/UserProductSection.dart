@@ -23,7 +23,7 @@ class UserProductSection extends StatelessWidget {
               onPressed: (){
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ProductPage()),
+                  MaterialPageRoute(builder: (context) =>  ProductPage()),
                 );
 
               },

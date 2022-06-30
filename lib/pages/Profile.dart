@@ -21,6 +21,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   List<Widget> sections = [];
+  List<Widget> favSections = [];
 
   @override
   void initState() {
@@ -132,33 +133,32 @@ class _ProfilePageState extends State<ProfilePage> {
                 textDirection: TextDirection.rtl,
                 child: TabBarView(
                   children: [
-                    UserInfo(),
-                    UserHistory(),
+                    const UserInfo(),
+                    const UserHistory(),
                     FutureBuilder(
                         future: send("userProduct- ", CurrentUser.port),
                         builder: (context, snapshot) => ListView(
                               children: [
-                                Center(
+                                const Center(
                                     child: Text(
                                   "کالا های من",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20),
                                 )),
-                                SizedBox(
+                                const SizedBox(
                                   height: 15,
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.only(left: 60, right: 60),
+                                  padding: const EdgeInsets.only(left: 60, right: 60),
                                   child: ElevatedButton(
                                       onPressed: () {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    AddProduct()));
+                                                    const AddProduct()));
                                       },
-                                      child: Text("افزودن کالا"),
                                       style: ButtonStyle(
                                           padding: MaterialStateProperty.all<
                                               EdgeInsets>(EdgeInsets.all(15)),
@@ -170,18 +170,61 @@ class _ProfilePageState extends State<ProfilePage> {
                                               RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(20),
-                                          )))),
+                                          ))),
+                                      child: const Text("افزودن کالا")),
                                 ),
                                 Column(children: sections)
                               ],
                             )),
-                    Fav()
+                    FutureBuilder(
+                        future: favSend(
+                            "favProduct-${CurrentUser.phoneNumber}",
+                            CurrentUser.port),
+                        builder: (context, snapshot) => ListView(
+                              children:[
+                                Center(
+                                    child: Text(
+                                      "لیست علاقه مندی ها",
+                                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                    )),
+                                SearchContainer.text("جست و جو در علاقه مندی ها"),
+                                Column(
+                                  children:favSections ,
+                                )
+                              ]
+                            )),
                   ],
                 ),
               ),
             )
           ])),
     );
+  }
+
+  Future<void> favSend(String serverData, int port) async {
+    await Socket.connect(ServerConnection.host, port).then((serverSocket) {
+      print("connected");
+      serverSocket.write(serverData + "\u0000");
+      serverSocket.flush();
+      serverSocket.listen((response) {
+        var result = utf8.decode(response);
+        var jsons = result.split(",,");
+        print(jsons);
+        var listArray = [];
+        for (String json in jsons) {
+          listArray.add(jsonDecode(json));
+        }
+        favSections = [];
+        for (var arrrayItem in listArray) {
+          favSections.add(AddedProductSection.argHidden(
+              arrrayItem["name"],
+              arrrayItem["images"][0],
+              arrrayItem["price"],
+              arrrayItem["rating"],
+              true));
+        }
+      });
+    });
   }
 
   Future<void> send(String serverData, int port) async {
@@ -196,9 +239,8 @@ class _ProfilePageState extends State<ProfilePage> {
         for (String json in jsons) {
           listArray.add(jsonDecode(json));
         }
-
+        sections = [];
         for (var arrrayItem in listArray) {
-
           sections.add(AddedProductSection.arg(
               arrrayItem["name"],
               arrrayItem["images"][0],
@@ -216,31 +258,6 @@ class _ProfilePageState extends State<ProfilePage> {
 //     serverSocket.flush();
 //   });
 // }
-}
-
-class Fav extends StatelessWidget {
-  const Fav({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        Center(
-            child: Text(
-          "لیست علاقه مندی ها",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-        )),
-        SearchContainer.text("جست و جو در علاقه مندی ها"),
-        FavProduct(),
-        FavProduct.arg(
-            "گوشی  شیاومی", "lib/img/products/mi.png", "20,000,000", "4.5"),
-        FavProduct.arg("گوشی  samsung", "lib/img/products/samsung2.png",
-            "28,000,000", "4.7"),
-      ],
-    );
-  }
 }
 
 class UserHistory extends StatelessWidget {

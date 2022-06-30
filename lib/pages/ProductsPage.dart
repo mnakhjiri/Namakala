@@ -1,14 +1,66 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:namakala/pages/ProductPage.dart';
 import 'package:namakala/widgets/FloatingButton.dart';
 import 'package:namakala/widgets/SearchContainer.dart';
 import  'package:persian_number_utility/persian_number_utility.dart';
+import '../CurrentUser.dart';
+import '../ServerConnection.dart';
 import '../widgets/NavigationBar.dart';
 
-class ProdoctsPage extends StatelessWidget {
+class ProdoctsPage extends StatefulWidget {
+  var isLoaded = false;
   var searchText = "جست و جو کنید";
   ProdoctsPage();
   ProdoctsPage.text(this.searchText);
+  var name = "";
+  ProdoctsPage.full(this.searchText, this.name);
+
+  @override
+  State<ProdoctsPage> createState() => _ProdoctsPageState();
+}
+
+class _ProdoctsPageState extends State<ProdoctsPage> {
+  List<Widget> sections = [];
+  @override
+  void initState() {
+    super.initState();
+    print("state initialized ");
+    setState(() {});
+  }
+  Future<void> send(String serverData, ServerType serverType) async {
+    int? port = ServerConnection.ports[serverType];
+    await Socket.connect(ServerConnection.host, port!).then((serverSocket) {
+      print("connected");
+      serverSocket.write(serverData + "\u0000");
+      serverSocket.flush();
+      serverSocket.listen((response) {
+        var result = utf8.decode(response);
+        var jsons = result.split(",,");
+        var listArray = [];
+        if(widget.isLoaded == false){
+          print("object");
+          widget.isLoaded = true;
+          setState((){
+          });
+        }
+        for (String json in jsons) {
+          listArray.add(jsonDecode(json));
+        }
+        sections = [];
+        for (var arrrayItem in listArray) {
+          sections.add(ProductSection.arg(
+              arrrayItem["name"],
+              arrrayItem["images"][0],
+              arrrayItem["price"],
+              arrrayItem["rating"]));
+        }
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,20 +72,15 @@ class ProdoctsPage extends StatelessWidget {
       home: Scaffold(
         body: Column(
           children: [
-            SearchContainer.text(searchText),
+            SearchContainer.text(widget.searchText),
             Expanded(
-              child: ListView(
-                children: [
-                  ProductSection(),
-                  SizedBox(height: 5,),
-                  ProductSection.arg("گوشی  samsung", "lib/img/products/samsung.png", "30,000,000", "4"),
-                  SizedBox(height: 5,),
-                  ProductSection.arg("گوشی  شیاومی", "lib/img/products/mi.png", "20,000,000", "4.5"),
-                  SizedBox(height: 5,),
-                  ProductSection.arg("گوشی  samsung", "lib/img/products/samsung2.png", "28,000,000", "4.7"),
-                  SizedBox(height: 5,),
-                ],
-              ),
+              child: FutureBuilder(
+                  future: send(
+                      "getProducts-${widget.name}",
+                      ServerType.ProductView),
+                  builder: (context, snapshot) => ListView(
+                      children:sections
+                  )),
             ),
           ],
         ),
@@ -65,7 +112,7 @@ class ProductSection extends StatelessWidget {
               onPressed: (){
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ProductPage(                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                )),
+                  MaterialPageRoute(builder: (context) =>  ProductPage(                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                )),
                 );
 
               },
@@ -80,7 +127,7 @@ class ProductSection extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  Image.asset(img_src,
+                  Image.network(img_src,
                     width: MediaQuery.of(context).size.width/3,
                     ),
                     Expanded(

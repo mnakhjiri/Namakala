@@ -15,7 +15,9 @@ class AddedProductSection extends StatelessWidget {
   var img_src = "lib/img/products/iphone.png";
   var price = "40,000,000";
   var rating = " 4.5";
+  var editHidden = false;
   AddedProductSection.arg(this.data, this.img_src, this.price, this.rating);
+  AddedProductSection.argHidden(this.data, this.img_src, this.price, this.rating , this.editHidden);
   @override
   Widget build(BuildContext context) {
 
@@ -29,7 +31,7 @@ class AddedProductSection extends StatelessWidget {
               onPressed: (){
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ProductPage()),
+                  MaterialPageRoute(builder: (context) =>  ProductPage.name(data)),
                 );
 
               },
@@ -76,43 +78,46 @@ class AddedProductSection extends StatelessWidget {
 
                     ),
                   ),
-                  Container(
-                    child: Column(
-                      children: [
-                        Row(
+                  Visibility(
+                    visible: !editHidden,
+                    child: Container(
+                      child: Column(
+                        children: [
+                          Row(
 
-                          children: [
-                            SizedBox(width: 40 , child: ElevatedButton(onPressed: (){
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) =>  EditProduct(data)),
-                              );
-                            },
-                                style: ButtonStyle(
-                                    backgroundColor:  MaterialStateProperty.all(Colors.black),
-                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(10),
-                                        )
-                                    )
-                                ),
-                                child: Center(child: Icon(Icons.edit , size: 10,)))),
-                            SizedBox(width : 10),
-                            SizedBox(width: 40 , child: ElevatedButton(onPressed: (){
-                              send("deleteProduct-" + data, CurrentUser.port);
-                            },
-                                style: ButtonStyle(
-                                    backgroundColor:  MaterialStateProperty.all(Colors.red),
-                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(10),
-                                        )
-                                    )
-                                ),
-                                child: Center(child: Icon(Icons.remove , size: 12, color: Colors.white,)))),
-                          ],
-                        )
-                      ],
+                            children: [
+                              SizedBox(width: 40 , child: ElevatedButton(onPressed: (){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) =>  EditProduct(data)),
+                                );
+                              },
+                                  style: ButtonStyle(
+                                      backgroundColor:  MaterialStateProperty.all(Colors.black),
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10),
+                                          )
+                                      )
+                                  ),
+                                  child: Center(child: Icon(Icons.edit , size: 10,)))),
+                              SizedBox(width : 10),
+                              SizedBox(width: 40 , child: ElevatedButton(onPressed: (){
+                                send("deleteProduct-" + data, CurrentUser.port);
+                              },
+                                  style: ButtonStyle(
+                                      backgroundColor:  MaterialStateProperty.all(Colors.red),
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10),
+                                          )
+                                      )
+                                  ),
+                                  child: Center(child: Icon(Icons.remove , size: 12, color: Colors.white,)))),
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                   )
                 ],

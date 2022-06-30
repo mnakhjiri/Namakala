@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 class ServerConnection{
-  static var ports = {ServerType.ClientHandler : 8000 , ServerType.RegisterHandler : 1717 , ServerType.LoginHandler : 4242 };
+  static var ports = {ServerType.ClientHandler : 8000 , ServerType.RegisterHandler : 1717 , ServerType.LoginHandler : 4242 , ServerType.ProductView : 4646 };
   static final  host = "192.168.31.96";
   // static Future<String> send(String data , ServerType type) async {
   //   ServerResult serverResult = ServerResult();
@@ -23,5 +23,5 @@ class ServerConnection{
   }
 }
 enum ServerType{
-  RegisterHandler , ClientHandler ,LoginHandler
+  RegisterHandler , ClientHandler ,LoginHandler , ProductView
 }
