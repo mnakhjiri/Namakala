@@ -85,7 +85,7 @@ class AddedProductSection extends StatelessWidget {
                             SizedBox(width: 40 , child: ElevatedButton(onPressed: (){
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => const EditProduct()),
+                                MaterialPageRoute(builder: (context) =>  EditProduct(data)),
                               );
                             },
                                 style: ButtonStyle(
