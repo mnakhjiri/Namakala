@@ -10,6 +10,7 @@ import '../pages/ProductPage.dart';
 
 class CartSection extends StatefulWidget {
   CartData cartData;
+
   CartSection.arg(this.cartData);
 
   @override

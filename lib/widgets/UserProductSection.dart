@@ -4,12 +4,9 @@ import 'package:persian_number_utility/persian_number_utility.dart';
 import '../pages/ProductPage.dart';
 
 class UserProductSection extends StatelessWidget {
-  UserProductSection();
-  var data = "گوشی  Iphone";
-  var img_src = "lib/img/products/iphone.png";
-  var price = "40,000,000";
-  var rating = " 4.5";
-  UserProductSection.arg(this.data, this.img_src, this.price, this.rating);
+  UserProductSection(this.price, this.date);
+  var price = "0";
+  var date = "1400 / 2 / 3";
   @override
   Widget build(BuildContext context) {
 
@@ -21,11 +18,6 @@ class UserProductSection extends StatelessWidget {
             padding: const EdgeInsets.all(20.0),
             child: ElevatedButton(
               onPressed: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) =>  ProductPage()),
-                );
-
               },
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Color(0xFFe3e1e1)),
@@ -38,34 +30,22 @@ class UserProductSection extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  // Image.network(img_src , width: , width: MediaQuery.of(context).size.width/5),
-                  Image.asset(img_src,
-                    width: MediaQuery.of(context).size.width/5,
-                  ),
                   Expanded(
                     child: Column(
 
                       children: [
-                        SizedBox(height: 20,),
-                        Text(data,
-                          textAlign: TextAlign.justify,
-                          style: TextStyle(
-                            fontFamily: 'vazirbold',
-                            color: Colors.black,
-                            height: 1.5 ,
-                            fontSize: 18,
-                          ),
-                        ),
                         SizedBox(height: 15,),
+
+                        Text(date.toPersianDigit() , style: TextStyle(color: Colors.black , fontSize: 20), textDirection: TextDirection.ltr,),
+                        SizedBox(height: 15,),
+
                         Text(price.toPersianDigit()  + " تومان",
                             style: TextStyle(
                               color: Colors.black,
                             )
                         ),
 
-                        SizedBox(height: 15,),
-                        
-                        Text("1400 / 2 / 3".toPersianDigit() , style: TextStyle(color: Colors.black), textDirection: TextDirection.ltr,),
+
 
                         SizedBox(height: 15,),
                       ],

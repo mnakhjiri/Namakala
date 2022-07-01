@@ -77,7 +77,6 @@ class _ProductPageState extends State<ProductPage> {
     cartWidget = ElevatedButton(onPressed: (){
       setState((){
         cartSend("setCart" + "-" + CurrentUser.phoneNumber + "-" + widget.name + "-" + "1" ,CurrentUser.port );
-        cartSend("reduceCount" + "-" + widget.name, CurrentUser.port);
         cartWidget = ElevatedButton(onPressed: (){
 
         },style: ButtonStyle(

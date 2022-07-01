@@ -1,22 +1,44 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:namakala/CurrentUser.dart';
 import 'package:namakala/widgets/CartSection.dart';
 import 'package:namakala/widgets/NavigationBar.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
+import 'package:animated_dialog_box/animated_dialog_box.dart';
 
+
+import '../CartData.dart';
+import '../ServerConnection.dart';
 import '../widgets/RadioGroup.dart';
 import '../widgets/SearchContainer.dart';
 
 class Buy extends StatefulWidget {
+
+  List<CartData> cartList;
+
+  Buy(this.cartList);
+
   @override
   State<Buy> createState() => _BuyState();
 
-  const Buy({Key? key}) : super(key: key);
 }
 
 class _BuyState extends State<Buy> {
+  TextEditingController addressController = TextEditingController();
   @override
   void initState() {
     super.initState();
+  }
+  cartSend(String serverData  , int port) async {
+    String result = "ok";
+    await Socket.connect(ServerConnection.host, port).then((serverSocket) {
+      print("connected");
+      print("hi");
+      serverSocket.write(serverData + "\u0000");
+      serverSocket.flush();
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -44,7 +66,8 @@ class _BuyState extends State<Buy> {
 
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width /1.25,
-                    child: const TextField(
+                    child:  TextField(
+                      controller: addressController,
                       textAlign: TextAlign.center,
                       cursorColor: Colors.black,
                       decoration: InputDecoration(
@@ -61,7 +84,7 @@ class _BuyState extends State<Buy> {
                 SizedBox(
                   height: 50,
                 ),
-                Center(child: Text("برای تکمیل خرید ابتدا باید وارد حساب کاربری خود شوید")),
+                Center(child: Text("")),
               ],
             ),
           )
@@ -76,7 +99,44 @@ class _BuyState extends State<Buy> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              ElevatedButton(onPressed: (){}, child: Container(
+              ElevatedButton(onPressed: (){
+                if(addressController.text != ""){
+                  var finalResult = 0;
+                  for(CartData cartData in widget.cartList){
+                    finalResult+= cartData.getPrice();
+                    cartSend("setCount-" + cartData.product["name"] + "-" + (cartData.max - cartData.count).toString(), CurrentUser.port);
+                    cartSend("setCart-" + CurrentUser.phoneNumber + "-" +  cartData.product["name"] + "-" + "0" , CurrentUser.port);
+                  }
+                  var order = {};
+                  order["price"] = finalResult.toString();
+                  order["address"] = addressController.text;
+                  order["userPhone"] = CurrentUser.phoneNumber;
+                   cartSend("addOrder-" + jsonEncode(order), CurrentUser.port);
+                  animated_dialog_box.showCustomAlertBox(context: context, yourWidget: Center(child: Text("سفارش با موفقیت ثبت شد" , style: TextStyle(), textAlign: TextAlign.center,)), firstButton: Center(
+                    child: MaterialButton(
+                      // FIRST BUTTON IS REQUIRED
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(40),
+                      ),
+                      onPressed: () {
+
+                      },
+                    ),
+                  ),);
+                }else{
+                  animated_dialog_box.showCustomAlertBox(context: context, yourWidget: Center(child: Text("لطفا آدرس را وارد کنید" , style: TextStyle(), textAlign: TextAlign.center,)), firstButton: Center(
+                    child: MaterialButton(
+                      // FIRST BUTTON IS REQUIRED
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(40),
+                      ),
+                      onPressed: () {
+
+                      },
+                    ),
+                  ),);
+                }
+              }, child: Container(
                 child: Text("تکمیل خرید" , style: TextStyle(color: Colors.white),),
               ),
                   style: ButtonStyle(

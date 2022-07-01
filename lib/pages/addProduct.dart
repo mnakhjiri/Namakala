@@ -212,7 +212,7 @@ class _AddProductState extends State<AddProduct> {
                         datas.removeAt(0);
                         atts[temp] = datas;
                       }
-                      serverMap['count'] = countController.text.toEnglishDigit;
+                      serverMap['count'] = countController.text.toEnglishDigit();
                       serverMap['name'] = nameController.text;
                       serverMap['categories'] = categoryController.text.split("-");
                       serverMap['price'] = priceController.text;

@@ -95,7 +95,7 @@ class _CartPageState extends State<CartPage> {
               ElevatedButton(onPressed: (){
                 Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const Buy()));
+                    MaterialPageRoute(builder: (context) =>  Buy(cartdatas)));
 
               }, child: Container(
                 child: Text("ادامه فرایند خرید" , style: TextStyle(color: Colors.white),),

@@ -22,7 +22,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   List<Widget> sections = [];
   List<Widget> favSections = [];
-
+  List<Widget> orders = [];
   @override
   void initState() {
     super.initState();
@@ -134,7 +134,22 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: TabBarView(
                   children: [
                     const UserInfo(),
-                    const UserHistory(),
+                  FutureBuilder(
+                    future: orderSend("getOrders-", CurrentUser.port),
+                    builder: (context , snapshot) => ListView(
+                      children: [
+                        Center(
+                            child: Text(
+                              "سفارش های ثبت شده",
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                            )),
+                        SearchContainer.text("جست و جو در سفارش ها"),
+                        Column(
+                          children: orders,
+                        )
+                      ],
+                    ),
+                  ),
                     FutureBuilder(
                         future: send("userProduct- ", CurrentUser.port),
                         builder: (context, snapshot) => ListView(
@@ -226,7 +241,26 @@ class _ProfilePageState extends State<ProfilePage> {
       });
     });
   }
-
+  Future<void> orderSend(String serverData, int port) async {
+    await Socket.connect(ServerConnection.host, port).then((serverSocket) {
+      print("connected");
+      serverSocket.write(serverData + "\u0000");
+      serverSocket.flush();
+      serverSocket.listen((response) {
+        var result = utf8.decode(response);
+        var serverOrders = jsonDecode(result);
+        orders = [];
+        print("orders are : ");
+        print(serverOrders);
+        for(var order in serverOrders){
+          var ordermap = jsonDecode(order);
+          orders.add(
+            UserProductSection(ordermap["price"].toString(), ordermap["address"] )
+          );
+        }
+      });
+    });
+  }
   Future<void> send(String serverData, int port) async {
     await Socket.connect(ServerConnection.host, port).then((serverSocket) {
       print("connected");
@@ -258,31 +292,6 @@ class _ProfilePageState extends State<ProfilePage> {
 //     serverSocket.flush();
 //   });
 // }
-}
-
-class UserHistory extends StatelessWidget {
-  const UserHistory({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        Center(
-            child: Text(
-          "سفارش های ثبت شده",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-        )),
-        SearchContainer.text("جست و جو در سفارش ها"),
-        UserProductSection(),
-        UserProductSection.arg(
-            "گوشی  شیاومی", "lib/img/products/mi.png", "20,000,000", "4.5"),
-        UserProductSection.arg("گوشی  samsung", "lib/img/products/samsung2.png",
-            "28,000,000", "4.7"),
-      ],
-    );
-  }
 }
 
 class UserInfo extends StatelessWidget {
